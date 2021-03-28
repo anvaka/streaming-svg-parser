@@ -5,7 +5,7 @@ parsing it.
 
 ## usage
 
-I need to document this better, but the here is a quick demo of how the parser could
+I need to document this better, but here is a quick demo of how the parser could
 work to print indented elements along with their attributes:
 
 ``` js
