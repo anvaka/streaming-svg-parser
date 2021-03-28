@@ -45,3 +45,8 @@ Close svg
 Note that `parseText()` was fed incomplete chunks of svg, which makes this parser
 ideal when you load large SVG files over the network but want to process them without
 waiting for the entire file to be loaded.
+
+
+## License
+
+MIT
