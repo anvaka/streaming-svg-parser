@@ -23,3 +23,27 @@ test('it can parse', (t) => {
   t.equals(lastCloseElement, svg);
   t.end();
 });
+
+test('it can print', t => {
+  let indent = '';
+  let parseText = createStreamingSVGParser(
+    openElement => {
+      // attributes is a map, let's print it
+      let attributes = Array.from(openElement.attributes)
+        .map(pair => pair.join('='))
+        .join(' ');
+
+      console.log(indent + 'Open ' + openElement.tagName + ' ' + attributes);
+      indent += '  ';
+    },
+    closeElement => {
+      indent = indent.substring(2);
+      console.log(indent + 'Close ' + closeElement.tagName);
+    }
+  );
+  parseText('<?xml version="1.0" encoding="UTF-8"?>');
+  parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
+  parseText('<g id="my-id"><');
+  parseText('/g></svg>');
+  t.end()
+})
