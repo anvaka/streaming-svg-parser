@@ -1,0 +1,27 @@
+{
+  "name": "streaming-svg-parser",
+  "version": "1.0.0",
+  "description": "An SVG parser that processes SVG documents in chunk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anvaka/streaming-svg-parser.git"
+  },
+  "keywords": [
+    "svg",
+    "streaming",
+    "parser"
+  ],
+  "author": "Andrei Kashcha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anvaka/streaming-svg-parser/issues"
+  },
+  "homepage": "https://github.com/anvaka/streaming-svg-parser#readme",
+  "devDependencies": {
+    "tap": "^14.11.0"
+  }
+}
