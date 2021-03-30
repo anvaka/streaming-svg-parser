@@ -5,6 +5,8 @@ parsing it.
 
 ## usage
 
+You can find example of this parser in https://anvaka.github.io/map-of-reddit/ and 
+more specifically - [here](https://github.com/anvaka/map-of-reddit/blob/756ece61fdf246be10076994f7f5876a7af002e8/src/lib/createSVGLoader.js#L10).
 I need to document this better, but here is a quick demo of how the parser could
 work to print indented elements along with their attributes:
 
