@@ -47,3 +47,23 @@ test('it can print', t => {
   parseText('/g></svg>');
   t.end()
 })
+
+test('it can parse text', t => {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      if (el.tagName === 'text') {
+        t.equals(el.innerText, 'Hello world')
+        t.equals(el.attributes.get('style'), "font-family:'Arial'");
+        passed = true;
+      }
+    }
+  );
+  parseText('<?xml version="1.0" encoding="UTF-8"?>');
+  parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
+  parseText(`<text x="70" y = "80" style="font-family:'Arial'">Hello world</text>`);
+  parseText('</svg>');
+  t.equals(passed, true);
+  t.end()
+})
