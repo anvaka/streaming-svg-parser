@@ -1,6 +1,6 @@
 {
   "name": "streaming-svg-parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An SVG parser that processes SVG documents in chunk",
   "main": "index.js",
   "scripts": {
