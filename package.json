@@ -4,7 +4,7 @@
   "description": "An SVG parser that processes SVG documents in chunk",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tap --branches=50 --lines=50 --statements=50 --functions=50 test/*.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/anvaka/streaming-svg-parser#readme",
   "devDependencies": {
-    "tap": "^14.11.0"
+    "tap": "^16.2.0"
   }
 }

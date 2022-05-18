@@ -1,5 +1,5 @@
 const test = require('tap').test;
-const {createStreamingSVGParser} = require('../index');
+const {createStreamingSVGParser, getPointsFromPathData} = require('../index');
 
 test('it can parse', (t) => {
   let lastOpenElement, lastCloseElement;
@@ -14,13 +14,13 @@ test('it can parse', (t) => {
   parseText('<?xml version="1.0" encoding="UTF-8"?>');
   parseText('<svg clip-rule="evenodd" viewBox="0 0 5.1e5 762000">')
   let svg = lastOpenElement;
-  t.equals(lastOpenElement.tagName, 'svg');
-  t.equals(lastOpenElement.attributes.get('viewBox'), '0 0 5.1e5 762000');
+  t.equal(lastOpenElement.tagName, 'svg');
+  t.equal(lastOpenElement.attributes.get('viewBox'), '0 0 5.1e5 762000');
   parseText('<g id="borders"'); 
   parseText('>')
-  t.equals(lastOpenElement.attributes.get('id'), 'borders');
+  t.equal(lastOpenElement.attributes.get('id'), 'borders');
   parseText('</g></svg>')
-  t.equals(lastCloseElement, svg);
+  t.equal(lastCloseElement, svg);
   t.end();
 });
 
@@ -54,8 +54,8 @@ test('it can parse text', t => {
     Function.prototype,
     el => {
       if (el.tagName === 'text') {
-        t.equals(el.innerText, 'Hello world')
-        t.equals(el.attributes.get('style'), "font-family:'Arial'");
+        t.equal(el.innerText, 'Hello world')
+        t.equal(el.attributes.get('style'), "font-family:'Arial'");
         passed = true;
       }
     }
@@ -64,6 +64,35 @@ test('it can parse text', t => {
   parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
   parseText(`<text x="70" y = "80" style="font-family:'Arial'">Hello world</text>`);
   parseText('</svg>');
-  t.equals(passed, true);
+  t.equal(passed, true);
+  t.end()
+});
+
+test('it can parse path data', t => {
+  let passed = false;
+  const pathData ='M10 10 L200 -10 l-10 -10 H100 h10V10 v10';
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      if (el.tagName === 'path') {
+        let points = getPointsFromPathData(el.attributes.get('d'));
+        t.same(points, [
+          [10, 10],   // M 10 10
+          [200, -10], // L 200 -10
+          [190, -20], // l -10 -10
+          [100, -20], // H 100
+          [110, -20], // h 10
+          [110, 10],  // V 10
+          [110, 20],  // v 10
+        ]);
+        passed = true;
+      }
+    }
+  );
+  parseText('<?xml version="1.0" encoding="UTF-8"?>');
+  parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
+  parseText(`<path d="${pathData}"/>`);
+  parseText('</svg>');
+  t.equal(passed, true);
   t.end()
 })
