@@ -1,5 +1,6 @@
 const test = require('tap').test;
 const {createStreamingSVGParser, getPointsFromPathData} = require('../index');
+const getElementFillColor = require('../lib/getElementFillColor');
 
 test('it can parse', (t) => {
   let lastOpenElement, lastCloseElement;
@@ -95,4 +96,47 @@ test('it can parse path data', t => {
   parseText('</svg>');
   t.equal(passed, true);
   t.end()
+});
+
+
+test('it can get element fill color', t => {
+  let testCases = [
+    {fill: '#ff0000', parsed: [255, 0, 0]},
+    {fill: '#f00', parsed: [255, 0, 0]},
+    {style: "fill:#f01", parsed: [255, 0, 17]},
+    {style: "fill:rgb(255, 40, 0)", parsed: [255, 40, 0]},
+    {fill: "rgba(255, 127, 0, 1)", parsed: [255, 127, 0, 255]},
+  ];
+  let processedCount = 0;
+  let idToTestCase = new Map();
+  testCases.forEach((testCase, idx) => {
+    testCase.id = idx;
+    idToTestCase.set('' + idx, testCase);
+  });
+
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      if (el.tagName !== 'circle') return;
+      let id = el.attributes.get('id');
+      let testCase = idToTestCase.get(id);
+      if (!testCase) {
+        throw new Error('Unknown test case id: ' + id);
+      }
+      let parsedColor = getElementFillColor(el);
+      t.same(parsedColor, testCase.parsed);
+      processedCount += 1;
+    }
+  );
+  parseText('<?xml version="1.0" encoding="UTF-8"?>');
+  parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
+  parseText(testCases.map(testCase => {
+    if (testCase.fill) {
+      return `<circle id="${testCase.id}" cx="10" cy="10" r="10" fill="${testCase.fill}"/>`;
+    }
+    return `<circle id="${testCase.id}" cx="10" cy="10" r="10" style="${testCase.style}"/>`;
+  }).join('\n'));
+  parseText('</svg>');
+  t.equal(processedCount, testCases.length);
+  t.end();
 })
