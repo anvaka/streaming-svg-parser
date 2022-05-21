@@ -141,4 +141,22 @@ test('it can get element fill color', t => {
   parseText('</svg>');
   t.equal(processedCount, testCases.length);
   t.end();
+});
+
+test('it can process async', t => {
+  let openCount = 0, closeCount = 0;
+  let parseTextAsync = createStreamingSVGParser(
+    open => { openCount += 1; },
+    close => {closeCount += 1; },
+    true
+  );
+  return parseTextAsync([
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<svg clip-rule="evenodd" viewBox="0 0 5.1e5 762000">',
+    '<g id="borders"></g>',
+    '</svg>'].join('\n')).then(() => {
+      t.equal(openCount, 2);
+      t.equal(closeCount, 2);
+      t.end();
+    });
 })
