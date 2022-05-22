@@ -49,6 +49,27 @@ test('it can print', t => {
   t.end()
 })
 
+test('it can parse comments', t => {
+  let passed = true;
+  let totalTags = 0;
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      if (el.tagName === 'text') {
+        passed = false;
+      }
+      totalTags += 1;
+    }
+  );
+  parseText('<?xml version="1.0" encoding="UTF-8"?>');
+  parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
+  parseText(`<!-- text x="70" y = "80" style="font-family:'Arial'">Hello world</text-->`);
+  parseText('</svg>');
+  t.equal(passed, true);
+  t.equal(totalTags, 1, 'One tag found')
+  t.end()
+});
+
 test('it can parse text', t => {
   let passed = false;
   let parseText = createStreamingSVGParser(
