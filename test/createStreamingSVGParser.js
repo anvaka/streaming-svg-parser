@@ -70,6 +70,22 @@ test('it can parse comments', t => {
   t.end()
 });
 
+test('it parses tags on new lines', t=> {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    el => {
+      if (el.tagName === 'g') {
+        passed = true;
+      }
+    },
+    Function.prototype
+  );
+  parseText('<g>')
+  parseText('</g>');
+  t.equal(passed, true);
+  t.end()
+});
+
 test('it can parse text', t => {
   let passed = false;
   let parseText = createStreamingSVGParser(
