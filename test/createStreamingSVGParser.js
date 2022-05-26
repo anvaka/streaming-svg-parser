@@ -137,6 +137,31 @@ test('it can parse path data', t => {
   t.end()
 });
 
+test('it can read single boolean attribute', t => {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    el => {
+      t.ok(el.attributes.has('enabled'), 'enabled is present');
+      passed = true;
+    }, Function.prototype);
+  parseText('<path enabled></path>')
+  t.ok(passed);
+  t.end();
+});
+
+test('it can read single boolean attribute followed by another attribute', t => {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    el => {
+      t.ok(el.attributes.has('enabled'), 'enabled is present');
+      t.equal(el.attributes.get('d'), 'M0,0 1,1', 'data is correct');
+      passed = true;
+    }, Function.prototype);
+  parseText('<path enabled d="M0,0 1,1"></path>')
+  t.ok(passed);
+  t.end();
+});
+
 
 test('it can get element fill color', t => {
   let testCases = [
