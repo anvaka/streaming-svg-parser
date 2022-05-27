@@ -27,6 +27,7 @@ test('it can parse', (t) => {
 
 test('it can print', t => {
   let indent = '';
+  let buffer = [];
   let parseText = createStreamingSVGParser(
     openElement => {
       // attributes is a map, let's print it
@@ -34,19 +35,26 @@ test('it can print', t => {
         .map(pair => pair.join('='))
         .join(' ');
 
-      console.log(indent + 'Open ' + openElement.tagName + ' ' + attributes);
+      buffer.push(indent + '<' + openElement.tagName + ' ' + attributes + '>')
       indent += '  ';
     },
     closeElement => {
       indent = indent.substring(2);
-      console.log(indent + 'Close ' + closeElement.tagName);
+      buffer.push(indent + '</' + closeElement.tagName + '>');
     }
   );
   parseText('<?xml version="1.0" encoding="UTF-8"?>');
   parseText('<svg clip-rule="evenodd" viewBox="0 0 42 42">')
   parseText('<g id="my-id"><');
   parseText('/g></svg>');
-  t.end()
+
+  // we got indents now:
+  t.equal(buffer.join('\n'), 
+`<svg clip-rule=evenodd viewBox=0 0 42 42>
+  <g id=my-id>
+  </g>
+</svg>`)
+  t.end();
 })
 
 test('it can parse comments', t => {
@@ -158,6 +166,19 @@ test('it can read single boolean attribute followed by another attribute', t => 
       passed = true;
     }, Function.prototype);
   parseText('<path enabled d="M0,0 1,1"></path>')
+  t.ok(passed);
+  t.end();
+});
+
+test('it can read tag without attributes', t => {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    el => {
+      t.equal(el.tagName, 'g', 'g is read');
+      passed = true;
+    }, Function.prototype);
+  parseText('<g />')
+  parseText('<g/>')
   t.ok(passed);
   t.end();
 });
