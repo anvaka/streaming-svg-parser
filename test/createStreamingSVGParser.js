@@ -116,7 +116,7 @@ test('it can parse text', t => {
 
 test('it can parse path data', t => {
   let passed = false;
-  const pathData ='M10 10 L200 -10 l-10 -10 H100 h10V10 v10-10 m0 0 10 10';
+  const pathData ='M10 10 L200 -10 l-10 -10 H100 h10V10 v10-10 0.5 m0 0 10 10';
   let parseText = createStreamingSVGParser(
     Function.prototype,
     el => {
@@ -131,7 +131,8 @@ test('it can parse path data', t => {
           [110, 10],  // V 10
           [110, 20],  // v 10
           [110, 10],  // -10
-          [120, 20],   // m0 0 10 10
+          [110, 10.5],  // 0.5
+          [120, 20.5],   // m0 0 10 10
         ]);
         passed = true;
       }
