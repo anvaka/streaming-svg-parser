@@ -133,7 +133,7 @@ test('it can parse path data', t => {
           [110, 10],  // -10
           [110, 20],  // 1e1
           [110, 20.5],  // 0.5
-          [120, 30.5],   // m0 0 10 10
+          [120, 30.5],  // m0 0 10 10
         ]);
         passed = true;
       }
@@ -245,3 +245,22 @@ test('it can process async', t => {
       t.end();
     });
 })
+
+test('it throws when two M commands are in a row', t => {
+  let passed = false;
+  const pathData ='M10 10 M0 0';
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      if (el.tagName === 'path') {
+        t.throws(() => {
+          getPointsFromPathData(el.attributes.get('d'));
+        });
+        passed = true;
+      }
+    }
+  );
+  parseText(`<path d="${pathData}"/>`);
+  t.equal(passed, true);
+  t.end()
+});
