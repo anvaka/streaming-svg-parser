@@ -264,3 +264,11 @@ test('it throws when two M commands are in a row', t => {
   t.equal(passed, true);
   t.end()
 });
+
+test('NumberParser throws on second exponent', t => {
+
+  t.throws(
+    () => getPointsFromPathData('M1e1e1 10'), /Already has exponent/
+  );
+  t.end();
+})
