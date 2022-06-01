@@ -266,9 +266,22 @@ test('it throws when two M commands are in a row', t => {
 });
 
 test('NumberParser throws on second exponent', t => {
-
   t.throws(
     () => getPointsFromPathData('M1e1e1 10'), /Already has exponent/
+  );
+  t.end();
+});
+
+test('NumberParser throws on second fractional part', t => {
+  t.throws(
+    () => getPointsFromPathData('M1.1.1 10'), /fractional part/
+  );
+  t.end();
+});
+
+test('NumberParser throws on not a digit', t => {
+  t.throws(
+    () => getPointsFromPathData('M1p 10'), /Not a digit/
   );
   t.end();
 })
