@@ -285,3 +285,22 @@ test('NumberParser throws on not a digit', t => {
   );
   t.end();
 })
+
+test('it throws when two M commands has non even points', t => {
+  let passed = false;
+  const pathData ='M10 L0';
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      if (el.tagName === 'path') {
+        t.throws(() => {
+          getPointsFromPathData(el.attributes.get('d'));
+        });
+        passed = true;
+      }
+    }
+  );
+  parseText(`<path d="${pathData}"/>`);
+  t.equal(passed, true);
+  t.end()
+});
