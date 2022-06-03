@@ -159,6 +159,19 @@ test('it can read single boolean attribute', t => {
   t.end();
 });
 
+test('it ignores whitespace after single attribute', t => {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    el => {
+      t.ok(el.attributes.has('enabled'), 'enabled is present');
+      passed = true;
+    }, Function.prototype);
+
+  parseText('<path enabled /></path>')
+  t.ok(passed);
+  t.end();
+});
+
 test('it can read single boolean attribute followed by another attribute', t => {
   let passed = false;
   let parseText = createStreamingSVGParser(
