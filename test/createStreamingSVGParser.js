@@ -300,20 +300,20 @@ test('NumberParser throws on not a digit', t => {
 })
 
 test('it throws when two M commands has non even points', t => {
-  let passed = false;
-  const pathData ='M10 L0';
-  let parseText = createStreamingSVGParser(
-    Function.prototype,
-    el => {
-      if (el.tagName === 'path') {
-        t.throws(() => {
-          getPointsFromPathData(el.attributes.get('d'));
-        });
-        passed = true;
-      }
-    }
-  );
-  parseText(`<path d="${pathData}"/>`);
-  t.equal(passed, true);
+  t.throws(() => {
+    getPointsFromPathData('M10 L0');
+  });
   t.end()
+});
+
+test('It ignores whitespace in path data parsing', t => {
+  let points = getPointsFromPathData('M10     10');
+  t.same(points, [[10, 10]]);
+  t.end();
+});
+
+test('It ignore z in path data parsing', t => {
+  let points = getPointsFromPathData('M10 10z');
+  t.same(points, [[10, 10]]);
+  t.end();
 });
