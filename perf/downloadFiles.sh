@@ -1,0 +1,1 @@
+curl https://upload.wikimedia.org/wikipedia/commons/7/7f/Italy_-_Regions_and_provinces.svg > data/italy.svg
