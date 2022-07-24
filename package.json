@@ -3,8 +3,13 @@
   "version": "1.0.2",
   "description": "An SVG parser that processes SVG documents in chunk",
   "main": "index.js",
+  "jsdelivr": "dist/streaming-svg-parser.min.js",
+  "unpkg": "dist/streaming-svg-parser.min.js",
   "scripts": {
-    "test": "tap --branches=50 --lines=50 --statements=50 --functions=50 test/*.js"
+    "test": "tap --branches=50 --lines=50 --statements=50 --functions=50 test/*.js",
+    "build-min": "esbuild --bundle index.js --minify --sourcemap --outfile=dist/streaming-svg-parser.min.js --global-name=streamingSVGParser",
+    "build-max": "esbuild --bundle index.js --sourcemap --outfile=dist/streaming-svg-parser.js --global-name=streamingSVGParser",
+    "build": "npm run build-min && npm run build-max"
   },
   "repository": {
     "type": "git",
@@ -22,6 +27,7 @@
   },
   "homepage": "https://github.com/anvaka/streaming-svg-parser#readme",
   "devDependencies": {
+    "esbuild": "^0.14.49",
     "tap": "^16.2.0"
   }
 }
