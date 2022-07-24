@@ -3,6 +3,20 @@
 Very fast parser of SVG files, that doesn't need the entire file to start
 parsing it.
 
+## install
+
+You can get this package via npm:
+
+``` sh
+npm install streaming-svg-parser
+```
+
+Or via CDN:
+
+```
+<script src="https://unpkg.com/streaming-svg-parser@1.1.0/dist/streaming-svg-parser.min.js"/>
+```
+
 ## usage
 
 You can find example of this parser in https://anvaka.github.io/map-of-reddit/ and 
@@ -11,10 +25,14 @@ I need to document this better, but here is a quick demo of how the parser could
 work to print indented elements along with their attributes:
 
 ``` js
-const createStreamingSVGParser = require('streaming-svg-parser');
+// If you are using node.js, you can use require() to load the parser.
+// 
+// Otherwise, if you used CDN with <script src='...'></script> tag,
+// `streamingSVGParser` will be available as global variable:
+const streamingSVGParser = require('streaming-svg-parser');
 
 let indent = '';
-let parseText = createStreamingSVGParser(
+let parseText = streamingSVGParser.createStreamingSVGParser(
   openElement => {
     // attributes is a map, let's print it
     let attributes = Array.from(openElement.attributes)
