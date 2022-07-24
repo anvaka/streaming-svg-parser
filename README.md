@@ -62,7 +62,7 @@ Open svg clip-rule=evenodd viewBox=0 0 42 42
 Close svg
 ```
 
-[Open on jsbin](https://jsbin.com/pikilibadu/1/edit?html,js,output)
+[Open in jsbin](https://jsbin.com/pikilibadu/2/edit?html,js,output)
 
 Note that `parseText()` was fed incomplete chunks of svg, which makes this parser
 ideal when you load large SVG files over the network but want to process them without
