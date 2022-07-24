@@ -1,6 +1,6 @@
 # streaming-svg-parser
 
-Very fast parser of SVG files, that doesn't need the entire file to start
+Very fast parser of SVG (and likely XML) files, that doesn't need the entire file to start
 parsing it.
 
 ## install
@@ -14,7 +14,7 @@ npm install streaming-svg-parser
 Or via CDN:
 
 ```
-<script src="https://unpkg.com/streaming-svg-parser@1.1.0/dist/streaming-svg-parser.min.js"/>
+  <script src="https://unpkg.com/streaming-svg-parser@1.1.0/dist/streaming-svg-parser.min.js"></script>
 ```
 
 ## usage
@@ -34,7 +34,7 @@ const streamingSVGParser = require('streaming-svg-parser');
 let indent = '';
 let parseText = streamingSVGParser.createStreamingSVGParser(
   openElement => {
-    // attributes is a map, let's print it
+    // attributes are in a map, let's print it:
     let attributes = Array.from(openElement.attributes)
       .map(pair => pair.join('='))
       .join(' ');
@@ -62,10 +62,16 @@ Open svg clip-rule=evenodd viewBox=0 0 42 42
 Close svg
 ```
 
+[Open on jsbin](https://jsbin.com/pikilibadu/1/edit?html,js,output)
+
 Note that `parseText()` was fed incomplete chunks of svg, which makes this parser
 ideal when you load large SVG files over the network but want to process them without
 waiting for the entire file to be loaded.
 
+## XML Support
+
+While originally this library is written for SVG, it should work for simple XML files 
+as well. Please let me know if you find anything missing.
 
 ## License
 
