@@ -159,6 +159,19 @@ test('it can read single boolean attribute', t => {
   t.end();
 });
 
+test('it can get inner text', t => {
+  let passed = false;
+  let parseText = createStreamingSVGParser(
+    Function.prototype,
+    el => {
+      t.equal(el.innerText, 'Hello world', 'inner text is correct');
+      passed = true;
+    });
+  parseText('<text>Hello world</text>')
+  t.ok(passed);
+  t.end();
+});
+
 test('it ignores whitespace after single attribute', t => {
   let passed = false;
   let parseText = createStreamingSVGParser(
